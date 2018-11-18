@@ -19,7 +19,6 @@
       :value="formattedValue"
       :mask="mask"
       :open-date="openDate"
-      placeholder="Date"
       :clear-button="clearButton"
       :disabled="disabled"
       :required="required"
