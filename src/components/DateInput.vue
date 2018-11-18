@@ -19,7 +19,7 @@
       :value="formattedValue"
       :mask="mask"
       :open-date="openDate"
-      :placeholder="placeholder"
+      placeholder="Date"
       :clear-button="clearButton"
       :disabled="disabled"
       :required="required"
@@ -27,8 +27,7 @@
       @input="(value) => tempValue = value"
       @click.native="showCalendar"
       @keyup.native="parseTypedDate"
-      @blur="inputBlurred"
-      autocomplete="off"/>
+      @blur.native="inputBlurred"/>
     <!-- Clear Button -->
     <span v-if="clearButton && selectedDate" class="vdp-datepicker__clear-button" :class="{'input-group-append' : bootstrapStyling}" @click="clearDate()">
       <span :class="{'input-group-text' : bootstrapStyling}">
@@ -42,7 +41,7 @@
 </template>
 <script>
 import maskedInput from 'vue-masked-input'
-import { makeDateUtils, parseDate } from '../utils/DateUtils'
+import { makeDateUtils, parseDate, formatDate } from '../utils/DateUtils'
 
 export default {
   props: {
@@ -114,7 +113,7 @@ export default {
       this.tempValue = false
     },
     selectedDate (val) {
-      if (val) this.tempValue = val.normaliseDot()
+      if (val) this.tempValue = this.utils.formatDate(new Date(this.selectedDate), this.format, this.translation)
     }
   },
   methods: {
@@ -134,13 +133,22 @@ export default {
         this.input.blur()
       }
 
-      if (this.typeable) {
+      console.log('parseTypedDate', )
+
+      if (this.typeable && isNeedParse(this.tempValue, this.mask)) {
         const typedDate = this.parseDate(this.tempValue)
         console.log('typedDate', typedDate)
         if (typedDate) {
           // this.typedDate = this.input.value
           this.$emit('typedDate', new Date(typedDate))
         }
+      }
+
+      function isNeedParse(value, mask) {
+        const maskOnlyNumbers = mask.replace(/\D/g, '')
+        const onlyNumbers = value.replace(/\D/g, '')
+        console.log('equal in value and mask', maskOnlyNumbers.length === onlyNumbers.length)
+        return maskOnlyNumbers.length === onlyNumbers.length
       }
     },
     /**
