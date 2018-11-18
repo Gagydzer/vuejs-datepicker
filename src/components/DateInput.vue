@@ -41,7 +41,7 @@
 </template>
 <script>
 import maskedInput from 'vue-masked-input'
-import { makeDateUtils, parseDate, formatDate } from '../utils/DateUtils'
+import { makeDateUtils, parseDate } from '../utils/DateUtils'
 
 export default {
   props: {
@@ -133,21 +133,17 @@ export default {
         this.input.blur()
       }
 
-      console.log('parseTypedDate', )
-
       if (this.typeable && isNeedParse(this.tempValue, this.mask)) {
         const typedDate = this.parseDate(this.tempValue)
-        console.log('typedDate', typedDate)
         if (typedDate) {
           // this.typedDate = this.input.value
           this.$emit('typedDate', new Date(typedDate))
         }
       }
 
-      function isNeedParse(value, mask) {
+      function isNeedParse (value, mask) {
         const maskOnlyNumbers = mask.replace(/\D/g, '')
         const onlyNumbers = value.replace(/\D/g, '')
-        console.log('equal in value and mask', maskOnlyNumbers.length === onlyNumbers.length)
         return maskOnlyNumbers.length === onlyNumbers.length
       }
     },

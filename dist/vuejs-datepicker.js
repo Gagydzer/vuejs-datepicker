@@ -337,7 +337,7 @@
 
   (function(){ if(typeof document !== 'undefined'){ var head=document.head||document.getElementsByTagName('head')[0], style=document.createElement('style'), css=""; style.type='text/css'; if (style.styleSheet){ style.styleSheet.cssText = css; } else { style.appendChild(document.createTextNode(css)); } head.appendChild(style); } })();
 
-  var DateInput = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{class:{'input-group' : _vm.bootstrapStyling}},[(_vm.calendarButton)?_c('span',{staticClass:"vdp-datepicker__calendar-button",class:{'input-group-prepend' : _vm.bootstrapStyling},style:({'cursor:not-allowed;' : _vm.disabled}),on:{"click":_vm.showCalendar}},[_c('span',{class:{'input-group-text' : _vm.bootstrapStyling}},[_c('i',{class:_vm.calendarButtonIcon},[_vm._v(" "+_vm._s(_vm.calendarButtonIconContent)+" "),(!_vm.calendarButtonIcon)?_c('span',[_vm._v("…")]):_vm._e()])])]):_vm._e(),_vm._v(" "),_c('masked-input',{ref:_vm.refName,class:_vm.computedInputClass,attrs:{"type":_vm.inline ? 'hidden' : 'text',"name":_vm.name,"id":_vm.id,"value":_vm.formattedValue,"mask":_vm.mask,"open-date":_vm.openDate,"placeholder":_vm.placeholder,"clear-button":_vm.clearButton,"disabled":_vm.disabled,"required":_vm.required,"readonly":!_vm.typeable,"autocomplete":"off"},on:{"input":function (value) { return _vm.tempValue = value; },"blur":_vm.inputBlurred},nativeOn:{"click":function($event){return _vm.showCalendar($event)},"keyup":function($event){return _vm.parseTypedDate($event)}}}),_vm._v(" "),(_vm.clearButton && _vm.selectedDate)?_c('span',{staticClass:"vdp-datepicker__clear-button",class:{'input-group-append' : _vm.bootstrapStyling},on:{"click":function($event){_vm.clearDate();}}},[_c('span',{class:{'input-group-text' : _vm.bootstrapStyling}},[_c('i',{class:_vm.clearButtonIcon},[(!_vm.clearButtonIcon)?_c('span',[_vm._v("×")]):_vm._e()])])]):_vm._e(),_vm._v(" "),_vm._t("afterDateInput")],2)},staticRenderFns: [],
+  var DateInput = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{class:{'input-group' : _vm.bootstrapStyling}},[(_vm.calendarButton)?_c('span',{staticClass:"vdp-datepicker__calendar-button",class:{'input-group-prepend' : _vm.bootstrapStyling},style:({'cursor:not-allowed;' : _vm.disabled}),on:{"click":_vm.showCalendar}},[_c('span',{class:{'input-group-text' : _vm.bootstrapStyling}},[_c('i',{class:_vm.calendarButtonIcon},[_vm._v(" "+_vm._s(_vm.calendarButtonIconContent)+" "),(!_vm.calendarButtonIcon)?_c('span',[_vm._v("…")]):_vm._e()])])]):_vm._e(),_vm._v(" "),_c('masked-input',{ref:_vm.refName,class:_vm.computedInputClass,attrs:{"type":_vm.inline ? 'hidden' : 'text',"name":_vm.name,"id":_vm.id,"value":_vm.formattedValue,"mask":_vm.mask,"open-date":_vm.openDate,"placeholder":"Date","clear-button":_vm.clearButton,"disabled":_vm.disabled,"required":_vm.required,"readonly":!_vm.typeable},on:{"input":function (value) { return _vm.tempValue = value; }},nativeOn:{"click":function($event){return _vm.showCalendar($event)},"keyup":function($event){return _vm.parseTypedDate($event)},"blur":function($event){return _vm.inputBlurred($event)}}}),_vm._v(" "),(_vm.clearButton && _vm.selectedDate)?_c('span',{staticClass:"vdp-datepicker__clear-button",class:{'input-group-append' : _vm.bootstrapStyling},on:{"click":function($event){_vm.clearDate();}}},[_c('span',{class:{'input-group-text' : _vm.bootstrapStyling}},[_c('i',{class:_vm.clearButtonIcon},[(!_vm.clearButtonIcon)?_c('span',[_vm._v("×")]):_vm._e()])])]):_vm._e(),_vm._v(" "),_vm._t("afterDateInput")],2)},staticRenderFns: [],
     props: {
       selectedDate: Date,
       resetTypedDate: [Date],
@@ -407,7 +407,7 @@
         this.tempValue = false;
       },
       selectedDate: function selectedDate (val) {
-        if (val) { this.tempValue = val.normaliseDot(); }
+        if (val) { this.tempValue = this.utils.formatDate(new Date(this.selectedDate), this.format, this.translation); }
       }
     },
     methods: {
@@ -427,13 +427,18 @@
           this.input.blur();
         }
 
-        if (this.typeable) {
+        if (this.typeable && isNeedParse(this.tempValue, this.mask)) {
           var typedDate = this.parseDate(this.tempValue);
-          console.log('typedDate', typedDate);
           if (typedDate) {
             // this.typedDate = this.input.value
             this.$emit('typedDate', new Date(typedDate));
           }
+        }
+
+        function isNeedParse (value, mask) {
+          var maskOnlyNumbers = mask.replace(/\D/g, '');
+          var onlyNumbers = value.replace(/\D/g, '');
+          return maskOnlyNumbers.length === onlyNumbers.length
         }
       },
       /**
