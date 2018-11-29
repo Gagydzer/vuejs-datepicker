@@ -11,8 +11,8 @@
     </span>
     <!-- Input -->
     <masked-input
+      v-if="mask"
       :type="inline ? 'hidden' : 'text'"
-      :class="computedInputClass"
       :name="name"
       :ref="refName"
       :id="id"
@@ -22,11 +22,24 @@
       :clear-button="clearButton"
       :disabled="disabled"
       :required="required"
-      :readonly="!typeable"
       @input="(value) => tempValue = value"
       @click.native="showCalendar"
       @keyup.native="parseTypedDate"
       @blur.native="inputBlurred"/>
+    <input v-else
+      :name="name"
+      :ref="refName"
+      :id="id"
+      :value="formattedValue"
+      :open-date="openDate"
+      :clear-button="clearButton"
+      :disabled="disabled"
+      :required="required"
+      :readonly="!typeable"
+      @input="(value) => tempValue = value"
+      @click="showCalendar"
+      @keyup="parseTypedDate"
+      @blur="inputBlurred"/>
     <!-- Clear Button -->
     <span v-if="clearButton && selectedDate" class="vdp-datepicker__clear-button" :class="{'input-group-append' : bootstrapStyling}" @click="clearDate()">
       <span :class="{'input-group-text' : bootstrapStyling}">
@@ -51,7 +64,10 @@ export default {
     inline: Boolean,
     id: String,
     name: String,
-    refName: String,
+    refName: {
+      type: String,
+      default : 'input'
+    },
     openDate: Date,
     placeholder: String,
     inputClass: [String, Object, Array],
@@ -91,10 +107,15 @@ export default {
         : this.utils.formatDate(new Date(this.selectedDate), this.format, this.translation)
     },
     mask () {
-      // if (!this.format || typeof this.format === 'function') return false
-      // return this.format.replace(/[a-zA-Z]/, d).replace(/\./, '\.') // TODO
+      // function not supported
+      if (!this.format 
+        || typeof this.format === 'function' || !/\./.test(this.format) ) {
+      console.log('format', /\./.test(this.format), this.format)
 
-      return '11.11.1111'
+          return false
+        }
+      if (this.format === true) return '11.11.1111'
+      return this.format.replace(/[a-zA-Z]/g, '1').replace(/\./, '\.')
     },
     computedInputClass () {
       if (this.bootstrapStyling) {
@@ -171,7 +192,11 @@ export default {
     }
   },
   mounted () {
-    this.input = this.$el.querySelector('input')
+    console.log('refs')
+    this.input = !this.mask 
+      ? this.$refs[this.refName]
+      : this.$refs[this.refName].$refs.input
+    if (!this.typeable) this.input.setAttribute('readonly', true)
   }
 }
 // eslint-disable-next-line

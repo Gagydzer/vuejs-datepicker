@@ -3,7 +3,7 @@
     <h1>Datepicker Examples</h1>
     <div class="example">
       <h3>Default datepicker...</h3>
-      <datepicker typeable format="dd.MM.yyyy" placeholder="Select Date" />
+      <datepicker :typeable="false" format="MMM yyyy" placeholder="Select Date" v-model="testDate"/>
       <code>
           &lt;datepicker placeholder="Select Date"&gt;&lt;/datepicker&gt;
       </code>
@@ -268,6 +268,7 @@ export default {
       styleInput: null,
       format: 'd MMMM yyyy',
       disabledDates: {},
+      testDate: null,
       openDate: null,
       disabledFn: {
         customPredictor (date) {
