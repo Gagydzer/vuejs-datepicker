@@ -300,6 +300,7 @@ var utils = {
   parseDate: function parseDate (dateString, format) {
     console.log('parse date', dateString);
     var m = moment(dateString, format.toUpperCase());
+    console.log('m', m.toDate());
     if (!m.isValid()) { return false }
     else { return m.format() }
   },
@@ -331,7 +332,7 @@ Object.assign({}, utils)
 
 (function(){ if(typeof document !== 'undefined'){ var head=document.head||document.getElementsByTagName('head')[0], style=document.createElement('style'), css=""; style.type='text/css'; if (style.styleSheet){ style.styleSheet.cssText = css; } else { style.appendChild(document.createTextNode(css)); } head.appendChild(style); } })();
 
-var DateInput = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{class:{'input-group' : _vm.bootstrapStyling}},[(_vm.calendarButton)?_c('span',{staticClass:"vdp-datepicker__calendar-button",class:{'input-group-prepend' : _vm.bootstrapStyling},style:({'cursor:not-allowed;' : _vm.disabled}),on:{"click":_vm.showCalendar}},[_c('span',{class:{'input-group-text' : _vm.bootstrapStyling}},[_c('i',{class:_vm.calendarButtonIcon},[_vm._v(" "+_vm._s(_vm.calendarButtonIconContent)+" "),(!_vm.calendarButtonIcon)?_c('span',[_vm._v("…")]):_vm._e()])])]):_vm._e(),_vm._v(" "),_c('masked-input',{ref:_vm.refName,class:_vm.computedInputClass,attrs:{"type":_vm.inline ? 'hidden' : 'text',"name":_vm.name,"id":_vm.id,"value":_vm.formattedValue,"mask":_vm.mask,"open-date":_vm.openDate,"clear-button":_vm.clearButton,"disabled":_vm.disabled,"required":_vm.required,"readonly":!_vm.typeable},on:{"input":function (value) { return _vm.tempValue = value; }},nativeOn:{"click":function($event){return _vm.showCalendar($event)},"keyup":function($event){return _vm.parseTypedDate($event)},"blur":function($event){return _vm.inputBlurred($event)}}}),_vm._v(" "),(_vm.clearButton && _vm.selectedDate)?_c('span',{staticClass:"vdp-datepicker__clear-button",class:{'input-group-append' : _vm.bootstrapStyling},on:{"click":function($event){_vm.clearDate();}}},[_c('span',{class:{'input-group-text' : _vm.bootstrapStyling}},[_c('i',{class:_vm.clearButtonIcon},[(!_vm.clearButtonIcon)?_c('span',[_vm._v("×")]):_vm._e()])])]):_vm._e(),_vm._v(" "),_vm._t("afterDateInput")],2)},staticRenderFns: [],
+var DateInput = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{class:{'input-group' : _vm.bootstrapStyling}},[(_vm.calendarButton)?_c('span',{staticClass:"vdp-datepicker__calendar-button",class:{'input-group-prepend' : _vm.bootstrapStyling},style:({'cursor:not-allowed;' : _vm.disabled}),on:{"click":_vm.showCalendar}},[_c('span',{class:{'input-group-text' : _vm.bootstrapStyling}},[_c('i',{class:_vm.calendarButtonIcon},[_vm._v(" "+_vm._s(_vm.calendarButtonIconContent)+" "),(!_vm.calendarButtonIcon)?_c('span',[_vm._v("…")]):_vm._e()])])]):_vm._e(),_vm._v(" "),(_vm.mask)?_c('masked-input',{ref:_vm.refName,attrs:{"type":_vm.inline ? 'hidden' : 'text',"name":_vm.name,"id":_vm.id,"value":_vm.formattedValue,"mask":_vm.mask,"open-date":_vm.openDate,"clear-button":_vm.clearButton,"disabled":_vm.disabled,"required":_vm.required},on:{"input":function (value) { return _vm.tempValue = value; }},nativeOn:{"click":function($event){return _vm.showCalendar($event)},"keyup":function($event){return _vm.parseTypedDate($event)},"blur":function($event){return _vm.inputBlurred($event)}}}):_c('input',{ref:_vm.refName,attrs:{"name":_vm.name,"id":_vm.id,"open-date":_vm.openDate,"clear-button":_vm.clearButton,"disabled":_vm.disabled,"required":_vm.required,"readonly":!_vm.typeable},domProps:{"value":_vm.formattedValue},on:{"input":function (value) { return _vm.tempValue = value; },"click":_vm.showCalendar,"keyup":_vm.parseTypedDate,"blur":_vm.inputBlurred}}),_vm._v(" "),(_vm.clearButton && _vm.selectedDate)?_c('span',{staticClass:"vdp-datepicker__clear-button",class:{'input-group-append' : _vm.bootstrapStyling},on:{"click":function($event){_vm.clearDate();}}},[_c('span',{class:{'input-group-text' : _vm.bootstrapStyling}},[_c('i',{class:_vm.clearButtonIcon},[(!_vm.clearButtonIcon)?_c('span',[_vm._v("×")]):_vm._e()])])]):_vm._e(),_vm._v(" "),_vm._t("afterDateInput")],2)},staticRenderFns: [],
   props: {
     selectedDate: Date,
     resetTypedDate: [Date],
@@ -340,7 +341,10 @@ var DateInput = {render: function(){var _vm=this;var _h=_vm.$createElement;var _
     inline: Boolean,
     id: String,
     name: String,
-    refName: String,
+    refName: {
+      type: String,
+      default : 'input'
+    },
     openDate: Date,
     placeholder: String,
     inputClass: [String, Object, Array],
@@ -380,10 +384,15 @@ var DateInput = {render: function(){var _vm=this;var _h=_vm.$createElement;var _
         : this.utils.formatDate(new Date(this.selectedDate), this.format, this.translation)
     },
     mask: function mask () {
-      // if (!this.format || typeof this.format === 'function') return false
-      // return this.format.replace(/[a-zA-Z]/, d).replace(/\./, '\.') // TODO
+      // function not supported
+      if (!this.format 
+        || typeof this.format === 'function' || !/\./.test(this.format) ) {
+      console.log('format', /\./.test(this.format), this.format);
 
-      return '11.11.1111'
+          return false
+        }
+      if (this.format === true) { return '11.11.1111' }
+      return this.format.replace(/[a-zA-Z]/g, '1').replace(/\./, '\.')
     },
     computedInputClass: function computedInputClass () {
       if (this.bootstrapStyling) {
@@ -460,7 +469,11 @@ var DateInput = {render: function(){var _vm=this;var _h=_vm.$createElement;var _
     }
   },
   mounted: function mounted () {
-    this.input = this.$el.querySelector('input');
+    console.log('refs');
+    this.input = !this.mask 
+      ? this.$refs[this.refName]
+      : this.$refs[this.refName].$refs.input;
+    if (!this.typeable) { this.input.setAttribute('readonly', true); }
   }
 }
 // eslint-disable-next-line
