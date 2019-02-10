@@ -91,8 +91,8 @@ export default {
           : new Date(d.getFullYear(), newMonth, 1, d.getHours(), d.getMinutes())
       }
 
-      const getPrevMonthDate = d => getNeiborDate(d, -1);
-      const getNextMonthDate = d => getNeiborDate(d, 1)
+      const getPrevMonthDate = d => getNeighborDate(d, -1);
+      const getNextMonthDate = d => getNeighborDate(d, 1)
 
       const getMonthDates = (d, isFaded) => {
         console.log('getMOnthDates', isFaded)
