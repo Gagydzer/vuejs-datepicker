@@ -540,9 +540,16 @@ var PickerDay = {render: function(){var _vm=this;var _h=_vm.$createElement;var _
         }
         return this$1.utils.getDay(dObj)
       };
+      
+      var getNeighborDate = function (d, monthShift) {
+        var newMonth = (this$1.useUtc ? d.getUTCMonth() : this$1.utils.getMonth(d)) + monthShift;
+        return this$1.useUtc
+          ? new Date(Date.UTC(d.getUTCFullYear(), newMonth, 1))
+          : new Date(d.getFullYear(), newMonth, 1, d.getHours(), d.getMinutes())
+      };
 
-      var getPrevMonthDate = function (d) { return getNeiborDate(d, -1); };
-      var getNextMonthDate = function (d) { return getNeiborDate(d, 1); };
+      var getPrevMonthDate = function (d) { return getNeighborDate(d, -1); };
+      var getNextMonthDate = function (d) { return getNeighborDate(d, 1); };
 
       var getMonthDates = function (d, isFaded) {
         console.log('getMOnthDates', isFaded);
