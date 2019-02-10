@@ -1,6 +1,6 @@
 /*!
  * vuejs-datepicker v1.5.3
- * (c) 2016-2018 Charlie Kassel
+ * (c) 2016-2019 Charlie Kassel
  * Released under the MIT License.
  */
 (function (global, factory) {
@@ -486,7 +486,7 @@
   ;
 
   (function(){ if(typeof document !== 'undefined'){ var head=document.head||document.getElementsByTagName('head')[0], style=document.createElement('style'), css=""; style.type='text/css'; if (style.styleSheet){ style.styleSheet.cssText = css; } else { style.appendChild(document.createTextNode(css)); } head.appendChild(style); } })();
-  var PickerDay = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showDayView),expression:"showDayView"}],class:[_vm.calendarClass, 'vdp-datepicker__calendar'],style:(_vm.calendarStyle),on:{"mousedown":function($event){$event.preventDefault();}}},[_vm._t("beforeCalendarHeader"),_vm._v(" "),_c('header',[_c('span',{staticClass:"prev",class:{'disabled': _vm.isLeftNavDisabled},on:{"click":function($event){_vm.isRtl ? _vm.nextMonth() : _vm.previousMonth();}}},[_vm._v("<")]),_vm._v(" "),_c('span',{staticClass:"day__month_btn",class:_vm.allowedToShowView('month') ? 'up' : '',on:{"click":_vm.showMonthCalendar}},[_vm._v(_vm._s(_vm.isYmd ? _vm.currYearName : _vm.currMonthName)+" "+_vm._s(_vm.isYmd ? _vm.currMonthName : _vm.currYearName))]),_vm._v(" "),_c('span',{staticClass:"next",class:{'disabled': _vm.isRightNavDisabled},on:{"click":function($event){_vm.isRtl ? _vm.previousMonth() : _vm.nextMonth();}}},[_vm._v(">")])]),_vm._v(" "),_c('div',{class:_vm.isRtl ? 'flex-rtl' : ''},[_vm._l((_vm.daysOfWeek),function(d){return _c('span',{key:d.timestamp,staticClass:"cell day-header"},[_vm._v(_vm._s(d))])}),_vm._v(" "),(_vm.blankDays > 0)?_vm._l((_vm.blankDays),function(d){return _c('span',{key:d.timestamp,staticClass:"cell day blank"})}):_vm._e(),_vm._l((_vm.days),function(day){return _c('span',{key:day.timestamp,staticClass:"cell day",class:_vm.dayClasses(day),domProps:{"innerHTML":_vm._s(_vm.dayCellContent(day))},on:{"click":function($event){_vm.selectDate(day);}}})})],2)],2)},staticRenderFns: [],
+  var PickerDay = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.showDayView),expression:"showDayView"}],class:[_vm.calendarClass, 'vdp-datepicker__calendar'],style:(_vm.calendarStyle),on:{"mousedown":function($event){$event.preventDefault();}}},[_vm._t("beforeCalendarHeader"),_vm._v(" "),_c('header',[_c('span',{staticClass:"prev",class:{'disabled': _vm.isLeftNavDisabled},on:{"click":function($event){_vm.isRtl ? _vm.nextMonth() : _vm.previousMonth();}}},[_vm._v("<")]),_vm._v(" "),_c('span',{staticClass:"day__month_btn",class:_vm.allowedToShowView('month') ? 'up' : '',on:{"click":_vm.showMonthCalendar}},[_vm._v(_vm._s(_vm.isYmd ? _vm.currYearName : _vm.currMonthName)+" "+_vm._s(_vm.isYmd ? _vm.currMonthName : _vm.currYearName))]),_vm._v(" "),_c('span',{staticClass:"next",class:{'disabled': _vm.isRightNavDisabled},on:{"click":function($event){_vm.isRtl ? _vm.previousMonth() : _vm.nextMonth();}}},[_vm._v(">")])]),_vm._v(" "),_c('div',{class:_vm.isRtl ? 'flex-rtl' : ''},[_vm._l((_vm.daysOfWeek),function(d){return _c('span',{key:d.timestamp,staticClass:"cell day-header"},[_vm._v(_vm._s(d))])}),_vm._v(" "),_vm._l((_vm.days),function(day){return _c('span',{key:day.timestamp,staticClass:"cell day",class:_vm.dayClasses(day),domProps:{"innerHTML":_vm._s(_vm.dayCellContent(day))},on:{"click":function($event){_vm.selectDate(day);}}})})],2)],2)},staticRenderFns: [],
     props: {
       showDayView: Boolean,
       selectedDate: Date,
@@ -527,50 +527,68 @@
         return this.translation.days
       },
       /**
-       * Returns the day number of the week less one for the first of the current month
-       * Used to show amount of empty cells before the first in the day calendar layout
-       * @return {Number}
-       */
-      blankDays: function blankDays () {
-        var d = this.pageDate;
-        var dObj = this.useUtc
-          ? new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1))
-          : new Date(d.getFullYear(), d.getMonth(), 1, d.getHours(), d.getMinutes());
-        if (this.mondayFirst) {
-          return this.utils.getDay(dObj) > 0 ? this.utils.getDay(dObj) - 1 : 6
-        }
-        return this.utils.getDay(dObj)
-      },
-      /**
        * @return {Object[]}
        */
       days: function days () {
         var this$1 = this;
 
-        var d = this.pageDate;
-        var days = [];
-        // set up a new date object to the beginning of the current 'page'
-        var dObj = this.useUtc
-          ? new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1))
-          : new Date(d.getFullYear(), d.getMonth(), 1, d.getHours(), d.getMinutes());
-        var daysInMonth = this.utils.daysInMonth(this.utils.getFullYear(dObj), this.utils.getMonth(dObj));
-        for (var i = 0; i < daysInMonth; i++) {
-          days.push({
-            date: this$1.utils.getDate(dObj),
-            timestamp: dObj.getTime(),
-            isSelected: this$1.isSelectedDate(dObj),
-            isDisabled: this$1.isDisabledDate(dObj),
-            isHighlighted: this$1.isHighlightedDate(dObj),
-            isHighlightStart: this$1.isHighlightStart(dObj),
-            isHighlightEnd: this$1.isHighlightEnd(dObj),
-            isToday: this$1.utils.compareDates(dObj, new Date()),
-            isWeekend: this$1.utils.getDay(dObj) === 0 || this$1.utils.getDay(dObj) === 6,
-            isSaturday: this$1.utils.getDay(dObj) === 6,
-            isSunday: this$1.utils.getDay(dObj) === 0
-          });
-          this$1.utils.setDate(dObj, this$1.utils.getDate(dObj) + 1);
-        }
-        return days
+        /**
+           * Returns the day number of the week less one for the first of the current month
+           * Used to show amount of empty cells before the first in the day calendar layout
+           * @return {Number}
+         */
+        var getBlankDays = function (d) {
+          var dObj = this$1.useUtc
+            ? new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1))
+            : new Date(d.getFullYear(), d.getMonth(), 1, d.getHours(), d.getMinutes());
+          if (this$1.mondayFirst) {
+            return this$1.utils.getDay(dObj) > 0 ? this$1.utils.getDay(dObj) - 1 : 6
+          }
+          return this$1.utils.getDay(dObj)
+        };
+
+        var getPrevMonthDate = function (d) { return getNeiborDate(d, -1); };
+        var getNextMonthDate = function (d) { return getNeiborDate(d, 1); };
+
+        var getMonthDates = function (d, isFaded) {
+          console.log('getMOnthDates', isFaded);
+          var days = [];
+          var dObj = this$1.useUtc
+            ? new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1))
+            : new Date(d.getFullYear(), d.getMonth(), 1, d.getHours(), d.getMinutes());
+          
+          var daysInMonth = this$1.utils.daysInMonth(this$1.utils.getFullYear(dObj), this$1.utils.getMonth(dObj));
+          for (var i = 0; i < daysInMonth; i++) {
+            days.push({
+              date: this$1.utils.getDate(dObj),
+              timestamp: dObj.getTime(),
+              isSelected: this$1.isSelectedDate(dObj),
+              isDisabled: this$1.isDisabledDate(dObj),
+              isFaded: isFaded,
+              isHighlighted: this$1.isHighlightedDate(dObj),
+              isHighlightStart: this$1.isHighlightStart(dObj),
+              isHighlightEnd: this$1.isHighlightEnd(dObj),
+              isToday: this$1.utils.compareDates(dObj, new Date()),
+              isWeekend: this$1.utils.getDay(dObj) === 0 || this$1.utils.getDay(dObj) === 6,
+              isSaturday: this$1.utils.getDay(dObj) === 6,
+              isSunday: this$1.utils.getDay(dObj) === 0
+            });
+            this$1.utils.setDate(dObj, this$1.utils.getDate(dObj) + 1);
+          }
+          return days
+        };
+
+        var prevMonthDates = getMonthDates(getPrevMonthDate(this.pageDate), true);
+
+        var currentMonthDates = getMonthDates(this.pageDate, false);
+        var nextMonthDates = getMonthDates(getNextMonthDate(this.pageDate), true);
+
+        return prevMonthDates
+          .slice(-getBlankDays(this.pageDate) || prevMonthDates.length)
+          .concat(currentMonthDates)
+          .concat(nextMonthDates
+            .slice(0, 7 - getBlankDays(getNextMonthDate(this.pageDate)))
+          )
       },
       /**
        * Gets the name of the month the current page is on
@@ -789,6 +807,7 @@
         return {
           'selected': day.isSelected,
           'disabled': day.isDisabled,
+          'grey': (!day.isToday && !day.isHighlighted) && day.isFaded,
           'highlighted': day.isHighlighted,
           'today': day.isToday,
           'weekend': day.isWeekend,
