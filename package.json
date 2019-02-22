@@ -38,7 +38,6 @@
   ],
   "dependencies": {
     "moment": "^2.22.2",
-    "momentjs": "^2.0.0",
     "vue-masked-input": "https://github.com/Gagydzer/vue-masked-input.git#add_focus_and_blur_events"
   },
   "peerDependencies": {
