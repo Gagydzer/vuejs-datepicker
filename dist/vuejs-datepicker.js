@@ -4,8 +4,8 @@
  * Released under the MIT License.
  */
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('moment'), require('vue-masked-input')) :
-  typeof define === 'function' && define.amd ? define(['moment', 'vue-masked-input'], factory) :
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('moment/min/moment.min.js'), require('vue-masked-input')) :
+  typeof define === 'function' && define.amd ? define(['moment/min/moment.min.js', 'vue-masked-input'], factory) :
   (global.vuejsDatepicker = factory(global.moment,global.maskedInput));
 }(this, (function (moment,maskedInput) { 'use strict';
 

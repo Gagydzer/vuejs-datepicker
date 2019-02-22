@@ -3,7 +3,7 @@
  * (c) 2016-2019 Charlie Kassel
  * Released under the MIT License.
  */
-import moment from 'moment';
+import moment from 'moment/min/moment.min.js';
 import maskedInput from 'vue-masked-input';
 
 var Language = function Language (language, months, monthsAbbr, days) {
