@@ -1,5 +1,5 @@
 import en from '../locale/translations/en'
-import moment from 'moment'
+import moment from 'moment/min/moment.min.js'
 
 const utils = {
   /**
