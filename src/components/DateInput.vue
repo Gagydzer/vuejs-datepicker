@@ -12,6 +12,7 @@
     <!-- Input -->
     <masked-input
       v-if="mask"
+      :class="computedInputClass"
       :type="inline ? 'hidden' : 'text'"
       :name="name"
       :ref="refName"
@@ -29,6 +30,7 @@
     <input v-else
       :name="name"
       :ref="refName"
+      :class="computedInputClass"
       :id="id"
       :value="formattedValue"
       :open-date="openDate"
