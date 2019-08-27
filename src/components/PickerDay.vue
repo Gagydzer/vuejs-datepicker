@@ -83,7 +83,7 @@ export default {
         }
         return this.utils.getDay(dObj)
       }
-      
+
       const getNeighborDate = (d, monthShift) => {
         const newMonth = (this.useUtc ? d.getUTCMonth() : this.utils.getMonth(d)) + monthShift
         return this.useUtc
@@ -95,12 +95,11 @@ export default {
       const getNextMonthDate = d => getNeighborDate(d, 1)
 
       const getMonthDates = (d, isFaded) => {
-        console.log('getMOnthDates', isFaded)
         const days = []
         let dObj = this.useUtc
           ? new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1))
           : new Date(d.getFullYear(), d.getMonth(), 1, d.getHours(), d.getMinutes())
-        
+
         let daysInMonth = this.utils.daysInMonth(this.utils.getFullYear(dObj), this.utils.getMonth(dObj))
         for (let i = 0; i < daysInMonth; i++) {
           days.push({

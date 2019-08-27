@@ -110,10 +110,8 @@ export default {
     },
     mask () {
       // function not supported
-      if (!this.format 
+      if (!this.format
         || typeof this.format === 'function' || !/\./.test(this.format) ) {
-      console.log('format', /\./.test(this.format), this.format)
-
           return false
         }
       if (this.format === true) return '11.11.1111'
@@ -140,7 +138,7 @@ export default {
   },
   methods: {
     showCalendar () {
-      this.$emit('showCalendar')
+       this.$emit('showCalendar')
     },
     /**
      * Attempt to parse a typed date
@@ -174,7 +172,6 @@ export default {
      * called once the input is blurred
      */
     inputBlurred () {
-      console.log('inputBlurred', this.parseDate(this.tempValue))
       if (this.typeable && !this.parseDate(this.tempValue)) {
         this.clearDate()
         this.tempValue = null
@@ -191,11 +188,20 @@ export default {
      */
     clearDate () {
       this.$emit('clearDate')
+    },
+    focus () {
+      const input = this.$refs[this.refName]
+      if (this.mask) {
+        input.$el.focus()
+        input.$el.click()
+      } else {
+        input.focus()
+        input.click()
+      }
     }
   },
   mounted () {
-    console.log('refs')
-    this.input = !this.mask 
+    this.input = !this.mask
       ? this.$refs[this.refName]
       : this.$refs[this.refName].$refs.input
     if (!this.typeable) this.input.setAttribute('readonly', true)

@@ -1,6 +1,7 @@
 <template>
   <div class="vdp-datepicker" :class="[wrapperClass, isRtl ? 'rtl' : '']">
     <date-input
+      ref="input"
       :selectedDate="selectedDate"
       :resetTypedDate="resetTypedDate"
       :format="format"
@@ -458,6 +459,10 @@ export default {
       if (this.isInline) {
         this.setInitialView()
       }
+    },
+    focus () {
+      const input = this.$refs.input
+      input.focus()
     }
   },
   mounted () {

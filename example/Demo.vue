@@ -2,16 +2,18 @@
   <div id="app">
     <h1>Datepicker Examples</h1>
     <div class="example">
-      <h3>Default datepicker...</h3>
-      <datepicker :typeable="false" format="MMM yyyy" placeholder="Select Date" v-model="testDate"/>
+      <h3 @click="$refs.first.focus()">Default datepicker...</h3>
+      <datepicker ref="first" :typeable="false" format="MMM yyyy" placeholder="Select Date" v-model="testDate"/>
       <code>
           &lt;datepicker placeholder="Select Date"&gt;&lt;/datepicker&gt;
       </code>
     </div>
 
     <div class="example">
-      <h3>Typeable datepicker</h3>
-      <datepicker placeholder="Type or select date" :typeable="true" />
+      <h3 @click="$refs.second.focus()">Typeable datepicker</h3>
+      <datepicker
+        ref="second"
+        :format="'dd.MM.yyyy'" placeholder="Type or select date" :typeable="true" />
       <code>
           &lt;datepicker placeholder="Type or select date" :typeable="true"&gt;&lt;/datepicker&gt;
       </code>
