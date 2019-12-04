@@ -18,6 +18,7 @@
       :clearButtonIcon="clearButtonIcon"
       :calendarButton="calendarButton"
       :calendarButtonIcon="calendarButtonIcon"
+      :confirm-on-enter="typeableConfirmOnEnter"
       :calendarButtonIconContent="calendarButtonIconContent"
       :disabled="disabled"
       :required="required"
@@ -150,6 +151,7 @@ export default {
     disabled: Boolean,
     required: Boolean,
     typeable: Boolean,
+    typeableConfirmOnEnter: Boolean,
     useUtc: Boolean,
     minimumView: {
       type: String,

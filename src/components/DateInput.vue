@@ -68,7 +68,7 @@ export default {
     name: String,
     refName: {
       type: String,
-      default : 'input'
+      default: 'input'
     },
     openDate: Date,
     placeholder: String,
@@ -82,7 +82,8 @@ export default {
     required: Boolean,
     typeable: Boolean,
     bootstrapStyling: Boolean,
-    useUtc: Boolean
+    useUtc: Boolean,
+    confirmOnEnter: Boolean
   },
   components: {
     maskedInput
@@ -110,10 +111,10 @@ export default {
     },
     mask () {
       // function not supported
-      if (!this.format
-        || typeof this.format === 'function' || !/\./.test(this.format) ) {
-          return false
-        }
+      if (!this.format ||
+        typeof this.format === 'function' || !/\./.test(this.format)) {
+        return false
+      }
       if (this.format === true) return '11.11.1111'
       return this.format.replace(/[a-zA-Z]/g, '1').replace(/\./, '\.')
     },
@@ -138,7 +139,7 @@ export default {
   },
   methods: {
     showCalendar () {
-       this.$emit('showCalendar')
+      this.$emit('showCalendar')
     },
     /**
      * Attempt to parse a typed date
@@ -151,7 +152,19 @@ export default {
         13 // enter
       ].includes(event.keyCode)) {
         this.input.blur()
-        if (this.parseDate(this.tempValue)) {
+        if (this.confirmOnEnter) {
+          if (this.parseDate(this.tempValue)) {
+            const typedDate = this.parseDate(this.tempValue)
+            if (typedDate) {
+              // this.typedDate = this.input.value
+              this.$emit('typedDate', new Date(typedDate))
+            }
+          }
+        }
+      }
+
+      if (!this.confirmOnEnter) {
+        if (this.typeable && isNeedParse(this.tempValue, this.mask)) {
           const typedDate = this.parseDate(this.tempValue)
           if (typedDate) {
             // this.typedDate = this.input.value
@@ -160,19 +173,11 @@ export default {
         }
       }
 
-      /*if (this.typeable && isNeedParse(this.tempValue, this.mask)) {
-        const typedDate = this.parseDate(this.tempValue)
-        if (typedDate) {
-          // this.typedDate = this.input.value
-          this.$emit('typedDate', new Date(typedDate))
-        }
-      }
-
       function isNeedParse (value, mask) {
         const maskOnlyNumbers = mask.replace(/\D/g, '')
         const onlyNumbers = value.replace(/\D/g, '')
         return maskOnlyNumbers.length === onlyNumbers.length
-      }*/
+      }
     },
     /**
      * nullify the typed date to defer to regular formatting
