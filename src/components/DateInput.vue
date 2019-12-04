@@ -151,9 +151,16 @@ export default {
         13 // enter
       ].includes(event.keyCode)) {
         this.input.blur()
+        if (this.parseDate(this.tempValue)) {
+          const typedDate = this.parseDate(this.tempValue)
+          if (typedDate) {
+            // this.typedDate = this.input.value
+            this.$emit('typedDate', new Date(typedDate))
+          }
+        }
       }
 
-      if (this.typeable && isNeedParse(this.tempValue, this.mask)) {
+      /*if (this.typeable && isNeedParse(this.tempValue, this.mask)) {
         const typedDate = this.parseDate(this.tempValue)
         if (typedDate) {
           // this.typedDate = this.input.value
@@ -165,17 +172,19 @@ export default {
         const maskOnlyNumbers = mask.replace(/\D/g, '')
         const onlyNumbers = value.replace(/\D/g, '')
         return maskOnlyNumbers.length === onlyNumbers.length
-      }
+      }*/
     },
     /**
      * nullify the typed date to defer to regular formatting
      * called once the input is blurred
      */
     inputBlurred () {
-      if (this.typeable && !this.parseDate(this.tempValue)) {
-        this.clearDate()
-        this.tempValue = null
-        this.typedDate = null
+      if (this.typeable) {
+        if (!this.parseDate(this.tempValue)) {
+          this.clearDate()
+          this.tempValue = null
+          this.typedDate = null
+        }
       }
 
       this.$emit('closeCalendar')

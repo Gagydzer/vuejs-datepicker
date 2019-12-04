@@ -3,7 +3,7 @@
     <h1>Datepicker Examples</h1>
     <div class="example">
       <h3 @click="$refs.first.focus()">Default datepicker...</h3>
-      <datepicker ref="first" :typeable="false" format="MMM yyyy" placeholder="Select Date" v-model="testDate"/>
+      <datepicker ref="first" :typeable="true" format="dd.MM.yyyy" placeholder="Select Date" v-model="testDate"/>
       <code>
           &lt;datepicker placeholder="Select Date"&gt;&lt;/datepicker&gt;
       </code>
