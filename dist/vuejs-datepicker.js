@@ -1,6 +1,6 @@
 /*!
  * vuejs-datepicker v1.5.3
- * (c) 2016-2019 Charlie Kassel
+ * (c) 2016-2020 Charlie Kassel
  * Released under the MIT License.
  */
 (function (global, factory) {
@@ -777,7 +777,7 @@
         if (typeof this.disabledDates.daysOfMonth !== 'undefined' && this.disabledDates.daysOfMonth.indexOf(this.utils.getDate(date)) !== -1) {
           disabledDates = true;
         }
-        if (typeof this.disabledDates.customPredictor === 'function' && this.disabledDates.customPredictor(date)) {
+        if (typeof this.disabledDates.customPredictor === 'function' && this.disabledDates.customPredictor(date,'day')) {
           disabledDates = true;
         }
         return disabledDates
@@ -821,7 +821,7 @@
           highlighted = true;
         }
 
-        if (typeof this.highlighted.customPredictor === 'function' && this.highlighted.customPredictor(date)) {
+        if (typeof this.highlighted.customPredictor === 'function' && this.highlighted.customPredictor(date,'day')) {
           highlighted = true;
         }
 
@@ -1050,7 +1050,7 @@
           }
         }
 
-        if (typeof this.disabledDates.customPredictor === 'function' && this.disabledDates.customPredictor(date)) {
+        if (typeof this.disabledDates.customPredictor === 'function' && this.disabledDates.customPredictor(date, 'month')) {
           disabledDates = true;
         }
         return disabledDates
@@ -1198,7 +1198,7 @@
           }
         }
 
-        if (typeof this.disabledDates.customPredictor === 'function' && this.disabledDates.customPredictor(date)) {
+        if (typeof this.disabledDates.customPredictor === 'function' && this.disabledDates.customPredictor(date,'year')) {
           disabledDates = true;
         }
 
