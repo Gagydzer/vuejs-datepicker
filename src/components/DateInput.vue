@@ -21,6 +21,7 @@
       :mask="mask"
       :open-date="openDate"
       :clear-button="clearButton"
+      :placeholder="placeholder"
       :disabled="disabled"
       :required="required"
       @input="(value) => tempValue = value"
