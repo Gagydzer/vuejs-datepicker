@@ -1,6 +1,6 @@
 /*!
  * vuejs-datepicker v1.5.3
- * (c) 2016-2020 Charlie Kassel
+ * (c) 2016-2021 Charlie Kassel
  * Released under the MIT License.
  */
 'use strict';
@@ -412,6 +412,7 @@ var DateInput = {render: function(){var _vm=this;var _h=_vm.$createElement;var _
     },
     selectedDate: function selectedDate (val) {
       if (val) { this.tempValue = this.utils.formatDate(new Date(this.selectedDate), this.format, this.translation); }
+      else { this.tempValue = ''; }
     }
   },
   methods: {

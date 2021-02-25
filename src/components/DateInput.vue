@@ -136,6 +136,7 @@ export default {
     },
     selectedDate (val) {
       if (val) this.tempValue = this.utils.formatDate(new Date(this.selectedDate), this.format, this.translation)
+      else this.tempValue = ''
     }
   },
   methods: {
